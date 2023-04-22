@@ -11,13 +11,13 @@ def create_app(test_config=None):
     # Create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'a-store.sqlite'),
+        SECRET_KEY="dev",
+        DATABASE=os.path.join(app.instance_path, "a-store.sqlite"),
     )
 
     if test_config is None:
         # Load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py')
+        app.config.from_pyfile("config.py", silent=True)
     else:
         # Load the test config if passed in
         app.config.from_mapping(test_config)
@@ -32,5 +32,10 @@ def create_app(test_config=None):
     from . import routes
 
     app.register_blueprint(routes.bp)
+
+    # Register the database
+    from . import db
+
+    db.init_app(app)
 
     return app
