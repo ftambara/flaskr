@@ -1,0 +1,29 @@
+html {
+    font-family: serif;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f0f0f0;
+    background-size: cover;
+    background-position: center;
+    background-image: image-set(
+        url("images/vertical-art.jpg") 0.5x,
+        url("images/art.jpg") 1x);
+    padding: 1rem;
+}
+
+body {
+    max-width: 40rem;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+h1 {
+    font-family: sans-serif;
+    text-align: center;
+    letter-spacing: -1px;
+}
