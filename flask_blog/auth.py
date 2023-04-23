@@ -50,7 +50,7 @@ def register() -> Response | str:
                 "SELECT * FROM user WHERE username = ?", (username,)
             ).fetchone()
             login_user(user)
-            return redirect(url_for("home.index"))
+            return redirect(url_for("blog.index"))
 
     return render_template("auth/register.html")
 
@@ -75,7 +75,7 @@ def login() -> Response | str:
             flash(error)
         else:
             login_user(user)
-            return redirect(url_for("home.index"))
+            return redirect(url_for("blog.index"))
 
     return render_template("auth/login.html")
 

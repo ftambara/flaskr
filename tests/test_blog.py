@@ -28,18 +28,18 @@ def logged_in_user(client, registered_user):
 
 class TestBlog:
     def test_blog_index(self, client):
-        response = client.get("/blog/")
+        response = client.get("/")
         assert response.status_code == 200
         assert b"Latest Posts" in response.data
 
     def test_a_logged_out_user_can_access_the_blog_index_page(self, client, init_db):
-        response = client.get("/blog/", follow_redirects=True)
+        response = client.get("/", follow_redirects=True)
         assert response.status_code == 200
         assert b"Latest Posts" in response.data
 
     def test_a_logged_in_user_can_access_the_blog_index_page(
         self, client, init_db, logged_in_user
     ):
-        response = client.get("/blog/", follow_redirects=True)
+        response = client.get("/", follow_redirects=True)
         assert response.status_code == 200
         assert b"Latest Posts" in response.data

@@ -29,11 +29,10 @@ def create_app(test_config=None):
         pass
 
     # Register the blueprints
-    from . import auth, blog, home
+    from . import auth, blog
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(blog.bp)
-    app.register_blueprint(home.bp)
 
     # Register the database
     from . import db
