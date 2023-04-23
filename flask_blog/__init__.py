@@ -28,14 +28,10 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # Register the routes
-    from . import home
+    # Register the blueprints
+    from . import home, auth
 
     app.register_blueprint(home.bp)
-
-    # Register the auth blueprint
-    from . import auth
-
     app.register_blueprint(auth.bp)
 
     # Register the database
