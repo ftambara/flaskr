@@ -101,13 +101,14 @@ def load_logged_in_user() -> None:
 def logout() -> Response:
     if "user_id" in session:
         del session["user_id"]
-    return redirect(url_for("home.index"))
+    return redirect(url_for("blog.index"))
 
 
 def login_required(view: Callable) -> Callable[..., Response]:
     @functools.wraps(view)
     def wrapped_view(**kwargs) -> Response:
         if not session.get("user_id"):
+            flash("You must be logged in to view this page.")
             return redirect(url_for("auth.login"))
 
         return view(**kwargs)

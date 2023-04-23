@@ -27,7 +27,7 @@ def logged_in_user(client, registered_user):
 
 
 class TestBlog:
-    def test_blog_index(self, client):
+    def test_blog_index(self, client, init_db):
         response = client.get("/")
         assert response.status_code == 200
         assert b"Latest Posts" in response.data
@@ -43,3 +43,35 @@ class TestBlog:
         response = client.get("/", follow_redirects=True)
         assert response.status_code == 200
         assert b"Latest Posts" in response.data
+
+    def test_a_logged_out_user_cannot_get_the_create_post_page(self, client, init_db):
+        response = client.get("/create", follow_redirects=True)
+        assert response.status_code == 200
+        assert b"You must be logged in to view this page." in response.data
+
+    def test_a_logged_in_user_can_get_the_create_post_page(
+        self, client, logged_in_user
+    ):
+        response = client.get("/create", follow_redirects=True)
+        assert response.status_code == 200
+        assert b"Create a Post" in response.data
+
+    def test_a_logged_out_user_cannot_create_a_post(self, client, init_db):
+        response = client.post(
+            "/create",
+            data={"title": "title", "body": "body"},
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+        assert b"You must be logged in to view this page." in response.data
+
+    def test_a_logged_in_user_can_create_a_post(self, client, logged_in_user):
+        response = client.post(
+            "/create",
+            data={"title": "title", "body": "body"},
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+        assert b"Post created!" in response.data
+        assert b"title" in response.data
+        assert b"body" in response.data

@@ -14,7 +14,7 @@ class TestAuth:
             follow_redirects=True,
         )
         assert response.status_code == 200
-        assert b"Hello" in response.data
+        assert b"Flaskr" in response.data
 
     def test_newly_registered_user_is_logged_in(self, client, init_db):
         response = client.post(
