@@ -29,9 +29,14 @@ def create_app(test_config=None):
         pass
 
     # Register the routes
-    from . import routes
+    from . import home
 
-    app.register_blueprint(routes.bp)
+    app.register_blueprint(home.bp)
+
+    # Register the auth blueprint
+    from . import auth
+
+    app.register_blueprint(auth.bp)
 
     # Register the database
     from . import db

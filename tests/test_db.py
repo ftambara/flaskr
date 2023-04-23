@@ -3,31 +3,26 @@ from sqlite3 import Connection
 from flask import Flask
 import pytest
 
-from flask_blog import create_app, db
-
-
-@pytest.fixture
-def app() -> Flask:
-    app = create_app(
-        {
-            "TESTING": True,
-            "DATABASE": ":memory:",
-        }
-    )
-    yield app
+from flask_blog import db
 
 
 @pytest.fixture
 def db_conn(app: Flask) -> Connection:
-    # Make current_app available to db.get_db()
-    with app.app_context():
-        conn = db.get_db()
+    def init_db():
         conn.execute("CREATE TABLE test_table (test_field TEXT NOT NULL);")
         conn.execute("INSERT INTO test_table (test_field) VALUES ('test_value');")
         conn.commit()
-        yield conn
+
+    def teardown_db():
         conn.execute("DROP TABLE test_table;")
         conn.commit()
+
+    # Make current_app available to db.get_db()
+    with app.app_context():
+        conn = db.get_db()
+        init_db()
+        yield conn
+        teardown_db()
 
 
 class TestDB:
