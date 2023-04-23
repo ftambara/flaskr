@@ -55,7 +55,11 @@ def create() -> Response | str:
             flash("Post created!")
             return redirect(url_for("blog.index"))
 
-    return render_template("blog/create.html")
+    return render_template("blog/create.html", post=empty_post())
+
+
+def empty_post() -> dict[str, str]:
+    return {"id": None, "title": "", "body": ""}
 
 
 def get_post(post_id: int) -> dict[str, str]:
