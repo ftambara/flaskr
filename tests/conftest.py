@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient
@@ -11,9 +13,17 @@ def app() -> Flask:
         {
             "TESTING": True,
             "DATABASE": ":memory:",
+            # "DATABASE": db_path,
         }
     )
-    yield app
+    data_path = os.path.join(os.path.dirname(__file__), "data.sql")
+    with open(data_path, "rb") as f:
+        data_sql = f.read().decode("utf8")
+
+    with app.app_context():
+        db.init_db()
+        db.get_db().executescript(data_sql)
+        yield app
 
 
 @pytest.fixture
@@ -24,14 +34,3 @@ def client(app: Flask) -> FlaskClient:
     :return: A Flask test client.
     """
     return app.test_client()
-
-
-@pytest.fixture
-def init_db(app: Flask) -> None:
-    """
-    Initialize the database.
-    :param app: The Flask app.
-    """
-    with app.app_context():
-        db.init_db()
-        yield

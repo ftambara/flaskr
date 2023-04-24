@@ -145,3 +145,7 @@ def delete(post_id: int) -> Response:
     db.commit()
     flash("Post deleted!")
     return redirect(url_for("blog.index"))
+
+
+def count_posts():
+    return get_db().execute("SELECT COUNT(*) FROM post").fetchone()["COUNT(*)"]

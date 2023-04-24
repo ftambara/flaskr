@@ -1,4 +1,5 @@
 include flask_blog/schema.sql
 graft flask_blog/static
 graft flask_blog/templates
+graft tests/data.sql
 global-exclude *.pyc
