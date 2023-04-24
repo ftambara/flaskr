@@ -132,3 +132,16 @@ def update(post_id: int) -> Response | str:
             return redirect(url_for("blog.index"))
 
     return render_template("blog/update.html", post=post)
+
+
+@bp.post("/delete/<int:post_id>")
+@login_required
+def delete(post_id: int) -> Response:
+    post = get_post(post_id)
+    if post["author_id"] != g.user["id"]:
+        abort(403)
+    db = get_db()
+    db.execute("DELETE FROM post WHERE id = ?", (post_id,))
+    db.commit()
+    flash("Post deleted!")
+    return redirect(url_for("blog.index"))

@@ -170,3 +170,29 @@ class TestBlog:
         assert b"Post updated!" in response.data
         assert b"title" in response.data
         assert b"body" in response.data
+
+    def test_a_logged_out_user_cannot_delete_a_post(self, client, created_post):
+        response = client.post(f"/delete/{created_post['id']}", follow_redirects=True)
+        assert response.status_code == 200
+        assert b"You must be logged in to view this page." in response.data
+
+    def test_a_logged_in_user_cannot_delete_another_users_post(
+        self, client, created_post
+    ):
+        # Register another user, log in should be done automatically
+        client.post(
+            "/auth/register",
+            data={"username": "username2", "password": "password"},
+            follow_redirects=True,
+        )
+        response = client.post(f"/delete/{created_post['id']}", follow_redirects=True)
+        assert response.status_code == 403
+
+    # Note: `created_post` must be before `logged_in_user` because `created_post`
+    # logs out the user.
+    def test_a_logged_in_user_can_delete_its_own_post(
+        self, client, created_post, logged_in_user
+    ):
+        response = client.post(f"/delete/{created_post['id']}", follow_redirects=True)
+        assert response.status_code == 200
+        assert b"Post deleted!" in response.data
