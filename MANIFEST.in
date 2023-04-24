@@ -1,0 +1,4 @@
+include flask_blog/schema.sql
+graft flask_blog/static
+graft flask_blog/templates
+global-exclude *.pyc
