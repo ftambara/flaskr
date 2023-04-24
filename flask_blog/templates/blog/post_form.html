@@ -6,6 +6,10 @@
     <input type="text" name="title" id="title" value="{{ request.form['title'] or post['title'] }}" required>
     <label for="body">Body</label>
     <textarea name="body" id="body" cols="30" rows="10" required>{{ request.form['body'] or post['body'] }}</textarea>
-    <input type="submit" value="Update">
+    {% if post['id'] %}
+        <input type="submit" value="Update">
+    {% else %}
+        <input type="submit" value="Create">
+    {% endif %}
 </form>
 {% endblock %}
