@@ -5,6 +5,16 @@
 {% endblock %}
 
 {% block content %}
+    <section>
+        <a href="{{ url_for('blog.create') }}"><button>Create a Post</button></a>
+    </section>
+    <section>
+        {% if g.posts %}
+            <p>There are {{ g.posts|length }} posts.</p>
+        {% else %}
+            <p>There are no posts.</p>
+        {% endif %}
+    </section>
     {% for post in g.posts %}
         <article>
             <h2>{{ post['title'] }}</h2>
