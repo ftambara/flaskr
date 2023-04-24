@@ -140,7 +140,7 @@ class TestBlog:
         assert response.status_code == 200
         assert b"You must be logged in to view this page." in response.data
 
-    def test_a_logged_in_user_cannot_update_anothers_user_post(
+    def test_a_logged_in_user_cannot_update_another_users_post(
         self, client, created_post
     ):
         # Register another user, log in should be done automatically
